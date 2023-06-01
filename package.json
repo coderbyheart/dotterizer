@@ -1,0 +1,8 @@
+{
+  "name": "dotterizer",
+  "type": "module",
+  "dependencies": {
+    "color": "4.2.3",
+    "get-pixels": "3.3.3"
+  }
+}
