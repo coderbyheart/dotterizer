@@ -9,7 +9,7 @@ import { sortByNearest } from "./sortByNearest.js";
 
 const dotSize = 8;
 const distance = 8;
-const dotsPerColor = 260 * 2;
+const dotsPerColor = 260;
 
 const photoFile = process.argv[process.argv.length - 1];
 const svgFile = photoFile + ".svg";
@@ -53,10 +53,11 @@ const coloredPreview = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
   <g>
     ${dots
       .map(([x, y, color]) => {
-        const nearestColor = sortByNearest(
-          color,
-          colorList.filter((c) => colorCount[c.hex()] > 0)
-        )[0];
+        const nearestColor = sortByNearest(color, colorList)[0];
+        if (colorCount[nearestColor.hex()] === 0) {
+          usedColors.push([x, y, null]);
+          return;
+        }
         colorCount[nearestColor.hex()]--;
         usedColors.push([x, y, nearestColor]);
         return [
@@ -96,7 +97,7 @@ const template = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
             style="font-size:4px;text-align:center;text-anchor:middle;text-color:#000000"
             x="${distance * x + distance / 2}"
             y="${distance * y + distance / 2 + 1}">${
-            colorList.indexOf(color) + 1
+            color !== null ? colorList.indexOf(color) + 1 : "X"
           }</text>`,
         ].join(os.EOL);
       })
@@ -121,17 +122,24 @@ const colorInfo = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
             style="fill:${color[0]};stroke-width:1mm;stroke-color:#cc0000"
             cx="${distance / 2}"
             cy="${distance * index + distance / 2}"
-            r="${(dotSize * 0.8) / 2}" />`,
+            r="${dotSize / 2}" />`,
+          `<circle
+              style="fill:transparent;stroke-width:0.1;stroke:#000000;"
+              cx="${distance / 2 + distance}"
+              cy="${distance * index + distance / 2}"
+              r="${(dotSize * 0.8) / 2}" />`,
           `<text
             style="font-size:4px;text-align:center;text-anchor:middle;text-color:#000000"
-            x="${distance / 2}"
+            x="${distance + distance / 2}"
             y="${distance * index + distance / 2 + 1}">${
             colors.indexOf(color) + 1
           }</text>`,
           `<text
             style="font-size:4px;text-align:left;text-anchor:left;text-color:#000000"
-            x="${distance}"
-            y="${distance * index + distance / 2 + 1}">${color[1]}</text>`,
+            x="${distance * 2}"
+            y="${distance * index + distance / 2 + 1}">${color[1]} (${
+            dotsPerColor - colorCount[color[0]]
+          })</text>`,
         ].join(os.EOL);
       })
       .join(os.EOL)}
