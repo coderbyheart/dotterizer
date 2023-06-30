@@ -9,7 +9,7 @@ import { sortByNearest } from "./sortByNearest.js";
 
 const dotSize = 8;
 const distance = 8;
-const dotsPerColor = 260;
+const dotsPerColor = 260 * 3;
 
 const photoFile = process.argv[process.argv.length - 1];
 const svgFile = photoFile + ".svg";
@@ -92,7 +92,7 @@ const template = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
             style="fill:transparent;stroke-width:0.1;stroke:#000000;"
             cx="${distance * x + distance / 2}"
             cy="${distance * y + distance / 2}"
-            r="${(dotSize * 0.8) / 2}" />`,
+            r="${dotSize / 2}" />`,
           `<text
             style="font-size:4px;text-align:center;text-anchor:middle;text-color:#000000"
             x="${distance * x + distance / 2}"
@@ -127,7 +127,7 @@ const colorInfo = `<?xml version="1.0" encoding="UTF-8" standalone="no"?>
               style="fill:transparent;stroke-width:0.1;stroke:#000000;"
               cx="${distance / 2 + distance}"
               cy="${distance * index + distance / 2}"
-              r="${(dotSize * 0.8) / 2}" />`,
+              r="${dotSize / 2}" />`,
           `<text
             style="font-size:4px;text-align:center;text-anchor:middle;text-color:#000000"
             x="${distance + distance / 2}"

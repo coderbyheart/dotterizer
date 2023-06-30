@@ -15,7 +15,7 @@ export const colors = [
   ["#006900", "green"],
   ["#523c4e", "dark brown"],
   ["#af7c55", "orange red"],
-  //["#50ff50", "neon green"],
+  ["#50ff50", "neon green"],
   ["#FFFFFF", "white"],
   ["#800080", "purple"],
   ["#84545c", "brown"],
